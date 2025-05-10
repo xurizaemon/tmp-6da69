@@ -4,29 +4,31 @@ on:
   push:
     branches:
       - main
+  pull_request:
   schedule:
     - cron: '0 0 * * 0'  # Run weekly on Sunday at midnight
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
-#  renovate:
-#    name: Renovate
-#    runs-on: ubuntu-latest
-#    container:
-#      image: renovate/renovate:latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Run Renovate
-#        env:
-#          RENOVATE_CONFIG_FILE: ${{ github.workspace }}/config/renovate/config.js
-#          RENOVATE_GIT_AUTHOR: "Renovate <renovate@grdev.co.nz>"
-#          RENOVATE_CONSTRAINTS: '{"php":"< 8.2.0"}'
-#          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
-#          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
-#          # LOG_LEVEL: debug
-#        run: renovate ${{ env.RENOVATE_EXTRA_FLAGS }}
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    container:
+      image: renovate/renovate:latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Renovate
+        env:
+          RENOVATE_CONFIG_FILE: ${{ github.workspace }}/config/renovate/config.js
+          RENOVATE_GIT_AUTHOR: "Renovate <renovate@example.org>"
+          RENOVATE_CONSTRAINTS: '{"php":"< 8.2.0"}'
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
+          # LOG_LEVEL: debug
+        run: renovate ${{ env.RENOVATE_EXTRA_FLAGS }}
 
   renovate-config-validator:
     name: Renovate Config Validator
