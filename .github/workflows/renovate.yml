@@ -11,21 +11,21 @@ on:
 
 jobs:
   renovate:
-    name: Renovate
+    name: renovate
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: self-hosted renovate
+      - name: Renovate
         uses: renovatebot/github-action@v42.0.0
         with:
           configurationFile: config/renovate/config.js
           token: ${{ secrets.RENOVATE_TOKEN }}
 
   validate:
-    name: renovate config validate
+    name: renovate-config-validate
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:

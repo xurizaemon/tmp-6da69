@@ -19,7 +19,7 @@ function getPlatformConfig() {
     console.log('GitHub Actions configuration');
     return {
       platform: 'github',
-      repositories: [process.env.GITHUB_REPOSITORY],
+      repositories: ['xurizaemon/tmp-6da69'],
     };
   }
 
