@@ -14,6 +14,8 @@ function getPlatformConfig() {
     };
   }
 
+  console.log(process.env, 'env');
+
   // Github Actions
   if (process.env.GITHUB_REPOSITORY) {
     console.log('GitHub Actions configuration');
