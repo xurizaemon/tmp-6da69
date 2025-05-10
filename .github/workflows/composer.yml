@@ -26,9 +26,12 @@ jobs:
       - name: Validate composer.json
         run: composer validate --verbose
 
-  audit:
-    name: Audit
+  install:
+    name: Install
     runs-on: ubuntu-latest
+    container:
+      image: composer:2
+    needs: validate
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -39,6 +42,29 @@ jobs:
 
       - name: Install dependencies
         run: composer install ${COMPOSER_INSTALL_ARGS}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vendor-files
+          path: |
+            vendor/
+            web/
+          retention-days: 1
+
+  audit:
+    name: Composer Audit
+    runs-on: ubuntu-latest
+    container:
+      image: composer:2
+    needs: [install]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vendor-files
       - name: Run composer audit
         continue-on-error: true
         run: composer audit | tee composer-audit.txt
