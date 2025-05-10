@@ -15,7 +15,7 @@ function getPlatformConfig() {
   }
 
   // Github Actions
-  if (process.env.GITHUB_ACTIONS) {
+  if (process.env.GITHUB_REPOSITORY) {
     console.log('GitHub Actions configuration');
     return {
       platform: 'github',
