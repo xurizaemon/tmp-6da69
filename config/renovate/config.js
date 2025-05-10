@@ -14,10 +14,8 @@ function getPlatformConfig() {
     };
   }
 
-  console.log(process.env, 'env');
-
   // Github Actions
-  if (process.env.GITHUB_REPOSITORY) {
+  if (process.env.RENOVATE_CONFIG_FILE.match(/github/)) {
     console.log('GitHub Actions configuration');
     return {
       platform: 'github',
