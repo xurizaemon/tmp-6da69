@@ -53,5 +53,10 @@ node_modules/
 
 # Ignore local phpstan configuration
 /phpstan.neon
+
+# Ignore firecow/gitlab-ci-local
 .gitlab-ci-local-variables.yml
 .gitlab-ci-local/
+
+# Ignore dotenv
+.env

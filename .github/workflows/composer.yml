@@ -1,0 +1,61 @@
+name: Composer
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  COMPOSER_INSTALL_ARGS: "--no-interaction --ignore-platform-req=ext-* --ignore-platform-req=lib-*"
+  # shivammathur/setup-php
+  PHP_EXTENSIONS: gd
+  PHP_VERSION: 8.1
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    container:
+      image: composer:2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate composer.json
+        run: composer validate --verbose
+
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install ${COMPOSER_INSTALL_ARGS}
+      - name: Run composer audit
+        continue-on-error: true
+        run: composer audit | tee composer-audit.txt
+
+  outdated:
+    name: Outdated
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install ${COMPOSER_INSTALL_ARGS}
+      - name: Check for outdated packages
+        continue-on-error: true
+        run: composer outdated ${COMPOSER_INSTALL_ARGS} | tee composer-outdated.txt
