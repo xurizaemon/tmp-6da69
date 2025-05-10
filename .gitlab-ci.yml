@@ -8,6 +8,7 @@ stages:
 
 variables:
   COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
+  COMPOSER_INSTALL_ARGS: "--no-interaction --ignore-platform-req=ext-* --ignore-platform-req=lib-*"
 
 .default_rules:
   rules:
@@ -55,7 +56,7 @@ composer install:
     - composer validate
   stage: build
   script:
-    - composer install --no-interaction --ignore-platform-req=ext-gd
+    - composer install ${COMPOSER_INSTALL_ARGS}
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
