@@ -7,6 +7,7 @@ This repo exists to reproduce an issue with Renovate where the generated `compos
 This project executes Renovate as a job in Gitlab CI. To configure:
 
 | Key | Value |
+|--|--|
 | `RENOVATE_GITHUB_COM_TOKEN` | A personal access token from Github.com ([docs](https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md#githubcom-token-for-changelogs)). |
 | `RENOVATE_TOKEN` | A Gitlab API token for the project (or group or user?) with role=Developer, scopes=api. |
 | `LOG_LEVEL` | `info` (less noisy) or `debug` |
