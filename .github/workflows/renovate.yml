@@ -22,6 +22,7 @@ jobs:
         uses: renovatebot/github-action@v42.0.0
         with:
           configurationFile: config/renovate/config.js
+          token: ${{ secrets.RENOVATE_TOKEN }}
 
   validate:
     name: renovate config validate
