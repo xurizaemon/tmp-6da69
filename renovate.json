@@ -1,0 +1,101 @@
+{
+    "assignees": [],
+    "automerge": false,
+    "automergeSchedule": [
+        "every weekend"
+    ],
+    "baseBranches": [
+        "/^main$/"
+    ],
+    "branchPrefix": "deps/",
+    "enabledManagers": [
+      "composer",
+      "npm"
+    ],
+    "extends": [
+        "config:recommended",
+        "group:symfony"
+    ],
+    "labels": [
+        "dependencies"
+    ],
+    "packageRules": [
+        {
+            "matchDepNames": [
+                "php"
+            ],
+            "enabled": false
+        },
+        {
+            "matchDatasources": [
+                "packagist"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "enabled": false,
+            "groupName": "Major all - skipped to update manually",
+            "matchPackageNames": [
+                "/.*/"
+            ]
+        },
+        {
+            "matchDatasources": [
+                "packagist"
+            ],
+            "matchDepNames": [
+                "drupal/core-composer-scaffold",
+                "drupal/core-dev",
+                "drupal/core-project-message",
+                "drupal/core-recommended"
+            ],
+            "matchUpdateTypes": [
+                "patch"
+            ],
+            "prPriority": 10,
+            "groupName": "Patch - Drupal Core",
+            "groupSlug": "patch-core"
+        },
+        {
+            "matchDatasources": [
+                "packagist"
+            ],
+            "prPriority": 20,
+            "groupName": "Minor and patch - Contrib",
+            "groupSlug": "minor-patch-contrib",
+            "separateMinorPatch": false,
+            "matchPackageNames": [
+                "!drupal/core-composer-scaffold",
+                "!drupal/core-dev",
+                "!drupal/core-project-message",
+                "!drupal/core-recommended",
+                "/.*/"
+            ]
+        },
+        {
+            "matchDatasources": [
+                "npm"
+            ],
+            "matchUpdateTypes": [
+                "patch",
+                "minor"
+            ],
+            "prPriority": 30,
+            "groupName": "Minor and patch - NPM",
+            "groupSlug": "custom-theme-npm-updates",
+            "matchFileNames": [
+                "web/modules/custom/*/package.json",
+                "web/themes/custom/*/package.json"
+            ],
+            "schedule": [
+                "before 2am"
+            ]
+        }
+    ],
+    "prConcurrentLimit": 2,
+    "rangeStrategy": "bump",
+    "rebaseWhen": "auto",
+    "timezone": "Pacific/Auckland",
+    "useBaseBranchConfig": "merge",
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+}
