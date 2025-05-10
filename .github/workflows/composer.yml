@@ -29,8 +29,6 @@ jobs:
   install:
     name: composer install
     runs-on: ubuntu-latest
-    container:
-      image: composer:2
     needs: validate
     steps:
       - uses: actions/checkout@v4
@@ -54,8 +52,6 @@ jobs:
   audit:
     name: composer audit
     runs-on: ubuntu-latest
-    container:
-      image: composer:2
     needs: [install]
     steps:
       - name: Checkout
@@ -72,8 +68,6 @@ jobs:
   outdated:
     name: composer outdated
     runs-on: ubuntu-latest
-    container:
-      image: composer:2
     needs: [install]
     steps:
       - name: Checkout
