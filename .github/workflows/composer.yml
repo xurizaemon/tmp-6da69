@@ -15,7 +15,7 @@ env:
 
 jobs:
   validate:
-    name: Validate
+    name: composer validate
     runs-on: ubuntu-latest
     container:
       image: composer:2
@@ -27,7 +27,7 @@ jobs:
         run: composer validate --verbose
 
   install:
-    name: Install
+    name: composer install
     runs-on: ubuntu-latest
     container:
       image: composer:2
@@ -52,7 +52,7 @@ jobs:
           retention-days: 1
 
   audit:
-    name: Composer Audit
+    name: composer audit
     runs-on: ubuntu-latest
     container:
       image: composer:2
@@ -70,18 +70,19 @@ jobs:
         run: composer audit | tee composer-audit.txt
 
   outdated:
-    name: Outdated
+    name: composer outdated
     runs-on: ubuntu-latest
+    container:
+      image: composer:2
+    needs: [install]
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          coverage: none
-          tools: composer:v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: composer install ${COMPOSER_INSTALL_ARGS}
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: vendor-files
       - name: Check for outdated packages
         continue-on-error: true
         run: composer outdated ${COMPOSER_INSTALL_ARGS} | tee composer-outdated.txt
